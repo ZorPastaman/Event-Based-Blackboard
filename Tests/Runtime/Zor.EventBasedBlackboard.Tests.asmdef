@@ -1,0 +1,16 @@
+{
+    "name": "Zor.EventBasedBlackboard.Tests",
+    "references": [
+        "Zor.EventBasedBlackboard"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

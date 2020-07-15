@@ -1,0 +1,16 @@
+{
+    "name": "Zor.EventBasedBlackboard.Editor",
+    "references": [
+        "Zor.EventBasedBlackboard"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
