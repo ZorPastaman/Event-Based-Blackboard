@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2019-2020 Vladimir Popov zor1994@gmail.com https://github.com/ZorPastaman/Event-Based-Blackboard
 
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zor.EventBasedBlackboard.Debugging;
 
@@ -20,8 +22,32 @@ namespace Zor.EventBasedBlackboard.Components.Main.Flushers
 #pragma warning restore CS0649
 
 		/// <summary>
+		/// Depended <see cref="BlackboardContainerComponent"/>.
+		/// </summary>
+		[NotNull]
+		public BlackboardContainerComponent blackboardContainer
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => m_BlackboardContainer;
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			set => m_BlackboardContainer = value;
+		}
+
+		/// <summary>
+		/// Parameter used in <see cref="Zor.EventBasedBlackboard.Core.Blackboard.Flush"/>.
+		/// </summary>
+		public bool forceSinglePass
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => m_ForceSinglePass;
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			set => m_ForceSinglePass = value;
+		}
+
+		/// <summary>
 		/// Call this method for flushing
 		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected void Flush()
 		{
 			m_BlackboardContainer.blackboard.Flush(m_ForceSinglePass);
@@ -34,6 +60,10 @@ namespace Zor.EventBasedBlackboard.Components.Main.Flushers
 				BlackboardDebug.LogError("[BlackboardContainerFlusher] Blackboard Container is null. Flusher is off", this);
 				enabled = false;
 			}
+		}
+
+		protected virtual void OnValidate()
+		{
 		}
 	}
 }

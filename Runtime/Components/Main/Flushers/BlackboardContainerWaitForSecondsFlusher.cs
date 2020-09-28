@@ -1,5 +1,7 @@
 // Copyright (c) 2019-2020 Vladimir Popov zor1994@gmail.com https://github.com/ZorPastaman/Event-Based-Blackboard
 
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Zor.EventBasedBlackboard.Components.Main.Flushers
@@ -17,6 +19,22 @@ namespace Zor.EventBasedBlackboard.Components.Main.Flushers
 #pragma warning disable CS0649
 		[SerializeField] private float m_Seconds;
 #pragma warning restore CS0649
+
+		public float seconds
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => m_Seconds;
+			set
+			{
+				if (m_Seconds == value)
+				{
+					return;
+				}
+
+				m_Seconds = value;
+				UpdateInstruction();
+			}
+		}
 
 		protected override YieldInstruction instruction => new WaitForSeconds(m_Seconds);
 	}

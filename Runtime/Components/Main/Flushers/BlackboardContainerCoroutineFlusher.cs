@@ -1,6 +1,7 @@
 // Copyright (c) 2019-2020 Vladimir Popov zor1994@gmail.com https://github.com/ZorPastaman/Event-Based-Blackboard
 
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Zor.EventBasedBlackboard.Components.Main.Flushers
@@ -20,6 +21,23 @@ namespace Zor.EventBasedBlackboard.Components.Main.Flushers
 		/// <see cref="Zor.EventBasedBlackboard.Components.Main.Flushers.BlackboardContainerCoroutineFlusher.Flush"/>.
 		/// </summary>
 		protected abstract YieldInstruction instruction { get; }
+
+		/// <summary>
+		/// Gets a new instruction from <see cref="instruction"/>.
+		/// </summary>
+		/// <remarks>
+		/// It doesn't recreate a current coroutine.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining), ContextMenu("Update Instruction")]
+		protected void UpdateInstruction()
+		{
+			m_instruction = instruction;
+		}
+
+		protected override void OnValidate()
+		{
+			m_instruction = instruction;
+		}
 
 		private void Awake()
 		{

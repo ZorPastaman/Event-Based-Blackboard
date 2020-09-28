@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2019-2020 Vladimir Popov zor1994@gmail.com https://github.com/ZorPastaman/Event-Based-Blackboard
 
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zor.EventBasedBlackboard.Core;
 using Zor.EventBasedBlackboard.Debugging;
@@ -28,9 +30,74 @@ namespace Zor.EventBasedBlackboard.Components.Main
 		private Blackboard m_blackboard;
 
 		/// <summary>
-		/// Contained <see cref="Zor.EventBasedBlackboard.Core.Blackboard"/> or null if it's called on prefab.
+		/// Contained <see cref="Zor.EventBasedBlackboard.Core.Blackboard"/>.
 		/// </summary>
-		public Blackboard blackboard => m_blackboard;
+		[NotNull]
+		public Blackboard blackboard
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => m_blackboard;
+		}
+
+		/// <summary>
+		/// How many serialized containers this <see cref="BlackboardContainerComponent"/> depends on.
+		/// </summary>
+		public int serializedContainersCount
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => m_SerializedContainers.Length;
+		}
+
+		/// <summary>
+		/// Gets a <see cref="SerializedContainer"/> at the index <paramref name="index"/>.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns><see cref="SerializedContainer"/> at the index <paramref name="index"/>.</returns>
+		/// <remarks>
+		/// If you change a gotten <see cref="SetSerializedContainer"/>,
+		/// you need to call <see cref="RecreateBlackboard"/> to apply changes.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining), NotNull, Pure]
+		public SerializedContainer GetSerializedContainer(int index)
+		{
+			return m_SerializedContainers[index];
+		}
+
+		/// <summary>
+		/// Sets the serialized container <paramref name="serializedContainer"/> at the index <paramref name="index"/>
+		/// </summary>
+		/// <param name="serializedContainer"></param>
+		/// <param name="index"></param>
+		/// <remarks>
+		/// You need to call <see cref="RecreateBlackboard"/> to apply changes.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void SetSerializedContainer([NotNull] SerializedContainer serializedContainer, int index)
+		{
+			m_SerializedContainers[index] = serializedContainer;
+		}
+
+		/// <summary>
+		/// Sets the serialized containers <paramref name="serializedContainers"/>.
+		/// </summary>
+		/// <param name="serializedContainers"></param>
+		/// <remarks>
+		/// You need to call <see cref="RecreateBlackboard"/> to apply changes.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void SetSerializedContainers([NotNull] SerializedContainer[] serializedContainers)
+		{
+			m_SerializedContainers = serializedContainers;
+		}
+
+		/// <summary>
+		/// Creates a new <see cref="Blackboard"/> and applies current serialized containers to it.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining), ContextMenu("Recreate Blackboard")]
+		public void RecreateBlackboard()
+		{
+			Awake();
+		}
 
 		private void Awake()
 		{
@@ -67,7 +134,7 @@ namespace Zor.EventBasedBlackboard.Components.Main
 		[ContextMenu("Log")]
 		private void Log()
 		{
-			UnityEngine.Debug.Log(m_blackboard.ToString(), this);
+			Debug.Log(m_blackboard.ToString(), this);
 		}
 	}
 }
