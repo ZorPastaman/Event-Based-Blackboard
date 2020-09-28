@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using JetBrains.Annotations;
 using UnityEngine.Profiling;
@@ -36,13 +37,18 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <summary>
 		/// How many value types are contained in the <see cref="Blackboard"/>.
 		/// </summary>
-		public int valueTypesCount => m_tables.Count;
+		public int valueTypesCount
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => m_tables.Count;
+		}
 
 		/// <summary>
 		/// How many properties are contained in the <see cref="Blackboard"/>.
 		/// </summary>
 		public int propertiesCount
 		{
+			[Pure]
 			get
 			{
 				Profiler.BeginSample("EventBasedBlackboard.propertiesCount");
@@ -70,6 +76,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <seealso cref="Flush"/>
 		public bool dirty
 		{
+			[Pure]
 			get
 			{
 				Profiler.BeginSample("EventBasedBlackboard.dirty");
@@ -78,7 +85,7 @@ namespace Zor.EventBasedBlackboard.Core
 
 				Dictionary<Type, IBlackboardTable>.ValueCollection.Enumerator enumerator =
 					m_tables.Values.GetEnumerator();
-				while (enumerator.MoveNext() && !isDirty)
+				while (enumerator.MoveNext() & !isDirty)
 				{
 					isDirty = enumerator.Current.dirty;
 				}
@@ -104,6 +111,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// </remarks>
 		/// <seealso cref="SetValue{T}"/>
 		/// <seealso cref="TryGetValue"/>
+		[Pure]
 		public bool TryGetValue<T>(BlackboardPropertyName propertyName, out T value)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.TryGetValue<T>");
@@ -141,6 +149,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// </remarks>
 		/// <seealso cref="SetValue"/>
 		/// <seealso cref="TryGetValue{T}"/>
+		[Pure]
 		public bool TryGetValue([NotNull] Type valueType, BlackboardPropertyName propertyName, out object value)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.TryGetValue");
@@ -175,7 +184,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// </remarks>
 		/// <seealso cref="TryGetValue{T}"/>
 		/// <seealso cref="SetValue"/>
-		public void SetValue<T>(BlackboardPropertyName propertyName, T value)
+		public void SetValue<T>(BlackboardPropertyName propertyName, [CanBeNull] T value)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.SetValue<T>");
 
@@ -203,7 +212,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// </remarks>
 		/// <seealso cref="TryGetValue"/>
 		/// <seealso cref="SetValue{T}"/>
-		public void SetValue([NotNull] Type valueType, BlackboardPropertyName propertyName, object value)
+		public void SetValue([NotNull] Type valueType, BlackboardPropertyName propertyName, [CanBeNull] object value)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.SetValue");
 
@@ -262,6 +271,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// and adds them to <paramref name="valueTypes"/>.
 		/// </summary>
 		/// <param name="valueTypes">Found value types are added to this.</param>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void GetValueTypes([NotNull] List<Type> valueTypes)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.GetValueTypes");
@@ -282,6 +292,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// is contained in the <see cref="Blackboard"/>; false otherwise.
 		/// </returns>
 		/// <seealso cref="Contains(System.Type,Zor.EventBasedBlackboard.Core.BlackboardPropertyName)"/>
+		[Pure]
 		public bool Contains<T>(BlackboardPropertyName propertyName)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.ContainsProperty<T>");
@@ -305,6 +316,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// is contained in the <see cref="Blackboard"/>; false otherwise.
 		/// </returns>
 		/// <seealso cref="Contains{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName)"/>
+		[Pure]
 		public bool Contains([NotNull] Type valueType, BlackboardPropertyName propertyName)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.ContainsProperty");
@@ -324,6 +336,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <returns>True if the <see cref="Blackboard"/> contains at least one value of <typeparamref name="T"/>;
 		/// false otherwise.</returns>
 		/// <seealso cref="Contains(System.Type)"/>
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public bool Contains<T>()
 		{
 			Profiler.BeginSample("EventBasedBlackboard.ContainsTable<T>");
@@ -342,6 +355,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <returns>True if the <see cref="Blackboard"/> contains at least one value of <paramref name="valueType"/>;
 		/// false otherwise.</returns>
 		/// <seealso cref="Contains{T}()"/>
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public bool Contains([NotNull] Type valueType)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.ContainsTable");
@@ -362,6 +376,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <para>-1 if the <see cref="Blackboard"/> doesn't contain a value of <typeparamref name="T"/>.</para>
 		/// </returns>
 		/// <seealso cref="GetCount"/>
+		[Pure]
 		public int GetCount<T>()
 		{
 			Profiler.BeginSample("EventBasedBlackboard.GetCount<T>");
@@ -384,6 +399,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <para>-1 if the <see cref="Blackboard"/> doesn't contain a value of <paramref name="valueType"/>.</para>
 		/// </returns>
 		/// <seealso cref="GetCount{T}"/>
+		[Pure]
 		public int GetCount([NotNull] Type valueType)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.GetCount");
@@ -517,7 +533,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <seealso cref="Unsubscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action)"/>
 		/// <seealso cref="Subscribe"/>
 		/// <seealso cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action{BlackboardChangeInfo{T}})"/>
-		public void Subscribe<T>(BlackboardPropertyName propertyName, Action onChanged)
+		public void Subscribe<T>(BlackboardPropertyName propertyName, [NotNull] Action onChanged)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.Subscribe<T> not typed");
 
@@ -542,7 +558,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <see cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action)"/>.
 		/// </remarks>
 		/// <seealso cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action)"/>
-		public void Unsubscribe<T>(BlackboardPropertyName propertyName, Action onChanged)
+		public void Unsubscribe<T>(BlackboardPropertyName propertyName, [NotNull] Action onChanged)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.Unsubscribe<T> not typed");
 
@@ -569,7 +585,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <seealso cref="Unsubscribe"/>
 		/// <seealso cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action)"/>
 		/// <seealso cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action{BlackboardChangeInfo{T}})"/>
-		public void Subscribe([NotNull] Type valueType, BlackboardPropertyName propertyName, Action onChanged)
+		public void Subscribe([NotNull] Type valueType, BlackboardPropertyName propertyName, [NotNull] Action onChanged)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.Subscribe not typed");
 
@@ -595,7 +611,8 @@ namespace Zor.EventBasedBlackboard.Core
 		/// that were used in <see cref="Subscribe"/>.
 		/// </remarks>
 		/// <seealso cref="Subscribe"/>
-		public void Unsubscribe([NotNull] Type valueType, BlackboardPropertyName propertyName, Action onChanged)
+		public void Unsubscribe([NotNull] Type valueType, BlackboardPropertyName propertyName,
+			[NotNull] Action onChanged)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.Unsubscribe not typed");
 
@@ -621,7 +638,8 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <seealso cref="Unsubscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action{BlackboardChangeInfo{T}})"/>
 		/// <seealso cref="Subscribe"/>
 		/// <seealso cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action)"/>
-		public void Subscribe<T>(BlackboardPropertyName propertyName, Action<BlackboardChangeInfo<T>> onChanged)
+		public void Subscribe<T>(BlackboardPropertyName propertyName,
+			[NotNull] Action<BlackboardChangeInfo<T>> onChanged)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.Subscribe<T> typed");
 
@@ -646,7 +664,8 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <see cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action{BlackboardChangeInfo{T}})"/>.
 		/// </remarks>
 		/// <seealso cref="Subscribe{T}(Zor.EventBasedBlackboard.Core.BlackboardPropertyName,System.Action{BlackboardChangeInfo{T}})"/>
-		public void Unsubscribe<T>(BlackboardPropertyName propertyName, Action<BlackboardChangeInfo<T>> onChanged)
+		public void Unsubscribe<T>(BlackboardPropertyName propertyName,
+			[NotNull] Action<BlackboardChangeInfo<T>> onChanged)
 		{
 			Profiler.BeginSample("EventBasedBlackboard.Unsubscribe<T> typed");
 
@@ -722,6 +741,7 @@ namespace Zor.EventBasedBlackboard.Core
 			return changed;
 		}
 
+		[Pure]
 		public override string ToString()
 		{
 			var builder = new StringBuilder();

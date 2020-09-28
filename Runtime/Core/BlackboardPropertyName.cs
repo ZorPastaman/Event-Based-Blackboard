@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Zor.EventBasedBlackboard.Core
@@ -14,15 +15,17 @@ namespace Zor.EventBasedBlackboard.Core
 	/// </remarks>
 	public readonly struct BlackboardPropertyName : IEquatable<BlackboardPropertyName>
 	{
+		private const int InitialCapacity = 100;
+
 		/// <summary>
 		/// Dictionary of all unique strings that were used in <see cref="BlackboardPropertyName(string)"/>
 		/// to their ids.
 		/// </summary>
-		private static readonly Dictionary<string, int> s_nameIds = new Dictionary<string, int>(100);
+		private static readonly Dictionary<string, int> s_nameIds = new Dictionary<string, int>(InitialCapacity);
 		/// <summary>
 		/// List of all unique strings that were used in <see cref="BlackboardPropertyName(string)"/>.
 		/// </summary>
-		private static readonly List<string> s_names = new List<string>(100);
+		private static readonly List<string> s_names = new List<string>(InitialCapacity);
 
 		/// <summary>
 		/// Unique per string id.
@@ -66,23 +69,32 @@ namespace Zor.EventBasedBlackboard.Core
 		/// was created with <see cref="BlackboardPropertyName(string)"/> and got the same <see cref="id"/>.
 		/// </para>
 		/// </returns>
-		public string name => id >= 0 && id < s_names.Count ? s_names[id] : string.Empty;
+		[NotNull]
+		public string name
+		{
+			[Pure]
+			get => id >= 0 & id < s_names.Count ? s_names[id] : string.Empty;
+		}
 
+		[Pure]
 		public override bool Equals(object obj)
 		{
 			return obj is BlackboardPropertyName other && Equals(other);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public bool Equals(BlackboardPropertyName other)
 		{
 			return other.id == id;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public override int GetHashCode()
 		{
 			return id;
 		}
 
+		[Pure]
 		public override string ToString()
 		{
 			return $"{id.ToString()}({name})";

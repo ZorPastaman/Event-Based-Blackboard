@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zor.EventBasedBlackboard.Core;
 using Zor.EventBasedBlackboard.Helpers;
@@ -20,7 +22,54 @@ namespace Zor.EventBasedBlackboard.Serialization
 #pragma warning restore CS0649
 
 		/// <inheritdoc/>
-		public sealed override Type valueType => typeof(T);
+		public sealed override Type valueType
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => typeof(T);
+		}
+
+		/// <summary>
+		/// How many keys are contained in this <see cref="ClassGeneratedValueSerializedTable{T}"/>.
+		/// </summary>
+		public int keysCount
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+			get => m_Keys.Length;
+		}
+
+		/// <summary>
+		/// Gets a key at the index <paramref name="index"/>.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns>
+		/// A property as a pair of <see cref="string"/> and <typeparamref name="T"/>.
+		/// </returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
+		public string GetKey(int index)
+		{
+			return m_Keys[index];
+		}
+
+		/// <summary>
+		/// Sets the key <paramref name="key"/> at the index <paramref name="index"/>.
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="index"></param>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void SetKey([NotNull] string key, int index)
+		{
+			m_Keys[index] = key;
+		}
+
+		/// <summary>
+		/// Sets <paramref name="keys"/>.
+		/// </summary>
+		/// <param name="keys"></param>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void SetKeys([NotNull] string[] keys)
+		{
+			m_Keys = keys;
+		}
 
 		/// <inheritdoc/>
 		public sealed override void Apply(Blackboard blackboard)

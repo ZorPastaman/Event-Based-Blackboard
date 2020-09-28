@@ -48,7 +48,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <para>To apply the change of the value and send callbacks subscribed to it, call <see cref="Flush"/>.</para>
 		/// </remarks>
 		/// <seealso cref="TryGetValue"/>
-		void SetValue(BlackboardPropertyName propertyName, object value);
+		void SetValue(BlackboardPropertyName propertyName, [CanBeNull] object value);
 
 		/// <summary>
 		/// Gets all properties and adds them to <paramref name="properties"/>.
@@ -94,7 +94,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// This method may allocate because of resizing of the list of callbacks.
 		/// </remarks>
 		/// <seealso cref="Unsubscribe"/>
-		void Subscribe(BlackboardPropertyName propertyName, Action onChanged);
+		void Subscribe(BlackboardPropertyName propertyName, [NotNull] Action onChanged);
 
 		/// <summary>
 		/// Unsubscribes <paramref name="onChanged"/> from a value of <paramref name="propertyName"/> change.
@@ -106,7 +106,7 @@ namespace Zor.EventBasedBlackboard.Core
 		/// <see cref="Subscribe"/>.
 		/// </remarks>
 		/// <seealso cref="Subscribe"/>
-		void Unsubscribe(BlackboardPropertyName propertyName, Action onChanged);
+		void Unsubscribe(BlackboardPropertyName propertyName, [NotNull] Action onChanged);
 
 		/// <summary>
 		/// Applies all changes in values and creates a list of current changes.

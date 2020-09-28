@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Zor.EventBasedBlackboard.Debugging
 {
@@ -24,36 +25,37 @@ namespace Zor.EventBasedBlackboard.Debugging
 
 		private const string Format = "[EventBasedBlackboard] {0}.";
 
-		[Conditional(BlackboardLogDetailsDefine)]
+		[Conditional(BlackboardLogDetailsDefine), MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void LogDetails(string message)
 		{
 			UnityEngine.Debug.LogFormat(Format, message);
 		}
 
-		[Conditional(BlackboardLogDefine)]
+		[Conditional(BlackboardLogDefine), MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void Log(string message)
 		{
 			UnityEngine.Debug.LogFormat(Format, message);
 		}
 
-		[Conditional(BlackboardLogWarningDefine)]
+		[Conditional(BlackboardLogWarningDefine), MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void LogWarning(string message, UnityEngine.Object context)
 		{
 			UnityEngine.Debug.LogWarningFormat(context, Format, message);
 		}
 
-		[Conditional(BlackboardLogErrorDefine)]
+		[Conditional(BlackboardLogErrorDefine), MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void LogError(string message)
 		{
 			UnityEngine.Debug.LogErrorFormat(Format, message);
 		}
 
-		[Conditional(BlackboardLogErrorDefine)]
+		[Conditional(BlackboardLogErrorDefine), MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void LogError(string message, UnityEngine.Object context)
 		{
 			UnityEngine.Debug.LogErrorFormat(context, Format, message);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void LogException(Exception exception)
 		{
 			UnityEngine.Debug.LogException(exception);

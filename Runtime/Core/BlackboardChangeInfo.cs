@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace Zor.EventBasedBlackboard.Core
 {
@@ -27,32 +29,37 @@ namespace Zor.EventBasedBlackboard.Core
 			this.removed = removed;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static BlackboardChangeInfo<T> CreateRemoved()
 		{
 			return new BlackboardChangeInfo<T>(default, true);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static BlackboardChangeInfo<T> CreateChanged(T value)
 		{
 			return new BlackboardChangeInfo<T>(value, false);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public override int GetHashCode()
 		{
 			return value.GetHashCode();
 		}
 
+		[Pure]
 		public override bool Equals(object obj)
 		{
 			return obj is BlackboardChangeInfo<T> other && Equals(other);
 		}
 
+		[Pure]
 		public bool Equals(BlackboardChangeInfo<T> other)
 		{
-			EqualityComparer<T> valueComparer = EqualityComparer<T>.Default;
-			return valueComparer.Equals(value, other.value) && removed == other.removed;
+			return removed == other.removed && EqualityComparer<T>.Default.Equals(value, other.value);
 		}
 
+		[Pure]
 		public override string ToString()
 		{
 			return removed ? "Removed" : value.ToString();

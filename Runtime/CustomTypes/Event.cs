@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2019-2020 Vladimir Popov zor1994@gmail.com https://github.com/ZorPastaman/Event-Based-Blackboard
 
 using System;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace Zor.EventBasedBlackboard.CustomTypes
 {
@@ -14,21 +16,25 @@ namespace Zor.EventBasedBlackboard.CustomTypes
 	/// </remarks>
 	public readonly struct Event : IEquatable<Event>
 	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public override int GetHashCode()
 		{
 			return 0;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public override bool Equals(object obj)
 		{
 			return false;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public bool Equals(Event other)
 		{
 			return false;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining), Pure]
 		public override string ToString()
 		{
 			return "Event";

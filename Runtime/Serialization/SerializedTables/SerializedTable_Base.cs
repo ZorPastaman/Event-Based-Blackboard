@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zor.EventBasedBlackboard.Core;
 
@@ -18,6 +19,7 @@ namespace Zor.EventBasedBlackboard.Serialization
 		/// <summary>
 		/// Type of serialized value in this table.
 		/// </summary>
+		[NotNull]
 		public abstract Type valueType { get; }
 
 		/// <summary>
@@ -27,12 +29,16 @@ namespace Zor.EventBasedBlackboard.Serialization
 		/// <remarks>
 		/// Doesn't call <see cref="Zor.EventBasedBlackboard.Core.Blackboard.Flush"/>.
 		/// </remarks>
-		public abstract void Apply(Blackboard blackboard);
+		public abstract void Apply([NotNull] Blackboard blackboard);
 
 		/// <summary>
 		/// Gets keys and their types and adds them to <paramref name="keys"/>.
 		/// </summary>
 		/// <param name="keys">Keys are added to this.</param>
-		public abstract void GetKeys(List<(string, Type)> keys);
+		public abstract void GetKeys([NotNull] List<(string, Type)> keys);
+
+		protected virtual void OnValidate()
+		{
+		}
 	}
 }
