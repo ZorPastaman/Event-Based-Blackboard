@@ -29,7 +29,7 @@ namespace Zor.EventBasedBlackboard.Serialization
 		}
 
 		/// <summary>
-		/// How many keys are contained in this <see cref="ClassGeneratedValueSerializedTable{T}"/>.
+		/// How many keys are contained in this <see cref="GeneratedValueSerializedTable{T}"/>.
 		/// </summary>
 		public int keysCount
 		{

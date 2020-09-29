@@ -31,7 +31,7 @@ namespace Zor.EventBasedBlackboard.Serialization
 		}
 
 		/// <summary>
-		/// How many properties are contained in this <see cref="ClassSerializedValueSerializedTable{T}"/>.
+		/// How many properties are contained in this <see cref="SerializedValueSerializedTable{T}"/>.
 		/// </summary>
 		public int propertiesCount
 		{
