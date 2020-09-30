@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.1] - 2020-09-30
+
+### Fixed
+
+- BlackboardPropertyReferenceDrawer paths are fixed.
+
 ## [1.1.0] - 2020-09-29
 
 ### Changed

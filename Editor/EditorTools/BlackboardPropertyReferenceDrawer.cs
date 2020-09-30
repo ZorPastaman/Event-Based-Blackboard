@@ -11,8 +11,8 @@ namespace Zor.EventBasedBlackboard.EditorTools
 {
 	public static class BlackboardPropertyReferenceDrawer
 	{
-		private const string BlackboardContainerPropertyName = "blackboardContainer";
-		private const string PropertyNamePropertyName = "propertyName";
+		private const string BlackboardContainerPropertyName = "m_BlackboardContainer";
+		private const string PropertyNamePropertyName = "m_PropertyName";
 
 		private const string SerializedContainersPropertyName = "m_SerializedContainers";
 
